@@ -6,7 +6,7 @@
 class Wav {
     
     RiffHeader header;
-    SubChunkFMT format;
+    SubChunkFMT property;
     SubChunkData data;
     string originalF = "";
     string finalF;
@@ -14,13 +14,12 @@ class Wav {
     
 public:
     Wav();
+    int getSizeF();
+    
     void ReadWav();
     void getAllData();
     void ChangeWav();
-    void Error(int);
-    int getSizeF();
     
-    template <typename T>
-    void CheckData(T data);
+    void Error(int);
 };
 
