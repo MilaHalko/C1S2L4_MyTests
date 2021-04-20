@@ -66,9 +66,9 @@
 			children = (
 				21D7513B262B619A00E781D1 /* main.cpp */,
 				21D75145262B8D6500E781D1 /* classWav.hpp */,
+				21D75144262B8D6500E781D1 /* classWav.cpp */,
 				21D7514D262B8E1500E781D1 /* structuresWavParts.cpp */,
 				21D7514E262B8E1500E781D1 /* structuresWavParts.hpp */,
-				21D75144262B8D6500E781D1 /* classWav.cpp */,
 				21D75149262B8D7D00E781D1 /* Libs.hpp */,
 			);
 			path = Lab4_OP_MyTesting;

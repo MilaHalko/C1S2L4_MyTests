@@ -21,7 +21,7 @@ struct SubChunkFMT {
 struct SubChunkData {
     int32_t subchunk2Id;
     int32_t subchunk2Size;
-    int16_t *music;
+    int64_t *music;
     int numSamples;
 };
 

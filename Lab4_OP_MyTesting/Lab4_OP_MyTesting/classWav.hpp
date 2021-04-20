@@ -11,10 +11,12 @@ class Wav {
     string originalF = "";
     string finalF;
     int sizeF;
+    int scale;
     
 public:
     Wav();
     int getSizeF();
+    void setScale(int scale) {this->scale = scale;}
     
     void ReadWav();
     void getAllData();

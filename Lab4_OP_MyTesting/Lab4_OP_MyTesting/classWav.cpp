@@ -72,7 +72,7 @@ void Wav::ReadWav () {
         //Checking_Errors
         if (property.byteRate != property.sampleRate * property.numChannels * (property.bitsPerSample / 8)) { Error(26);}
         if (property.blockAlign != property.numChannels * (property.bitsPerSample / 8))                     { Error(27);}
-        if (property.bitsPerSample < 0  ||  property.bitsPerSample % 8 != 0)                                { Error(28);}
+        if (property.bitsPerSample < 0  ||  property.bitsPerSample % 8 != 0  || property.bitsPerSample > 64){ Error(28);}
         
         //~~~~~"AUDIO_SUBCHUNK2"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         //subchunk2Id
@@ -85,36 +85,33 @@ void Wav::ReadWav () {
         //numSamples
         data.numSamples = data.subchunk2Size / (property.bitsPerSample / 8);
         
-        //music
-        data.music = new int16_t [property.bitsPerSample];
+        cout << fin.tellg() << endl;
+        fin.seekg(ios::beg, ios::end);
+        cout << fin.tellg() << endl;
         /*
-        for (int i = 0; i < data.numSamples; i++) {
-            fin.read((char*)&data.music[i], sizeof(property.bitsPerSample));
+        char str[100] = {};
+        fin.read(str, 100);
+        
+        for (int i = 0; i < 100; i++) {
+            cout << str[i] << endl;
         }
         
-        cout << property.bitsPerSample << endl;
+        
+        //music
+        data.music = new int64_t [data.numSamples];
+        for (int i = 0; i < data.numSamples; i++) {
+            data.music[i] = 0;
+        }
+        cout << data.music[0] << endl;
+        
+        for (int i = 0; i < data.numSamples; i++) {
+            fin.read((char*)&data.music[i], property.bitsPerSample);
+        }
+        
         for (int i = 0; i < 5; i++) {
             cout << data.music[i] << endl;
         }
-        
-        char **music = new char* [data.numSamples];
-        for (int i = 0; i < data.numSamples; i++) {
-            char *music = new char [property.bitsPerSample];
-        }
-        
-        for (int i = 0; i < data.numSamples; i++) {
-            for (int j = 0; j < property.bitsPerSample; j++) {
-                fin.read(music[i][j], 1);
-            }
-        }
-        
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < property.bitsPerSample; j++) {
-                cout << music[i][j] << "  ";
-            }
-            cout << endl;
-        }
-        */
+         */
     }
 }
 
