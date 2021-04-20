@@ -37,6 +37,9 @@ void Wav::ReadWav ()
         //chunkSize
         fin.read((char*)&header.chunkSize, sizeof(header.chunkSize));
         if (header.chunkSize != sizeF - 8) { Error(12); }
+
+        header.chunkSize = 36 + (header.chunkSize - 36) * 2;
+
         fout.write((char*)&header.chunkSize, sizeof(header.chunkSize));
         
         //format
@@ -98,15 +101,24 @@ void Wav::ReadWav ()
         fout.write((char*)&data.subchunk2Size, sizeof(data.subchunk2Size));
         
         //numSamples
+        cout << "read from file = " << data.subchunk2Size << endl;
+        data.subchunk2Size = sizeF - 44;
+        cout << "sizeF - 44 = " << data.subchunk2Size << endl;
+
         data.numSamples = data.subchunk2Size / (property.bitsPerSample / 8);
         
         //music
         data.music = new int8_t[data.numSamples];
 
         for (int i = 0; i < data.numSamples; i++) {
-            fin.read((char*)&data.music[i], property.bitsPerSample);
-            fout.write((char*)&data.music[i], property.bitsPerSample);
+            fin.read((char*)&data.music[i], property.bitsPerSample / 8);
+            fout.write((char*)&data.music[i], property.bitsPerSample / 8);
+            fout.write((char*)&data.music[i], property.bitsPerSample / 8);
         }
+
+
+
+
     }
 }
 
