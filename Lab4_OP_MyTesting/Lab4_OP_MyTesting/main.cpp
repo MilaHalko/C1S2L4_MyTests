@@ -11,6 +11,7 @@ int main() {
     cout << endl;
     
     audio.setScale(scale);
-    
+
+    system("pause");
     return 0;
 }
