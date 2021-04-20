@@ -6,6 +6,7 @@ int main() {
     Wav audio;
     audio.ReadWav();
     
+    system("pause");
     return 0;
 }
 

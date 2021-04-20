@@ -20,54 +20,67 @@ int Wav::getSizeF() {
 //------------------------------------------------------------------------------------------------------------------------
 
 
-void Wav::ReadWav () {
-    
+void Wav::ReadWav () 
+{
     ifstream fin(originalF, ios::binary);
+    ofstream fout(finalF, ios::binary);
     
-    if (!fin) {Error(0);}
+    if (!fin) Error(0);
+
     else {
         //~~~~~"AUDIO_HEADER"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         //chunkId
         fin.read((char*)&header.chunkId, sizeof(header.chunkId));
-        if (header.chunkId != 1179011410)  { Error(11);}
+        if (header.chunkId != 1179011410) { Error(11); }
+        fout.write((char*)&header.chunkId, sizeof(header.chunkId));
         
         //chunkSize
         fin.read((char*)&header.chunkSize, sizeof(header.chunkSize));
-        if (header.chunkSize != sizeF - 8) { Error(12);}
+        if (header.chunkSize != sizeF - 8) { Error(12); }
+        fout.write((char*)&header.chunkSize, sizeof(header.chunkSize));
         
         //format
         fin.read((char*)&header.format, sizeof(header.format));
-        if (header.format != 1163280727)   { Error(13);}
+        if (header.format != 1163280727) { Error(13); }
+        fout.write((char*)&header.format, sizeof(header.format));
         
         //~~~~~"AUDIO_SUBCHUNK1"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         //subchunk1Id
         fin.read((char*)&property.subchunk1Id, sizeof(property.subchunk1Id));
         if (property.subchunk1Id != 544501094) { Error(21);}
+        fout.write((char*)&property.subchunk1Id, sizeof(property.subchunk1Id));
         
         //subchunk1Size
         fin.read((char*)&property.subchunk1Size, sizeof(property.subchunk1Size));
         if (property.subchunk1Size != 16)      { Error(22);}
+        fout.write((char*)&property.subchunk1Size, sizeof(property.subchunk1Size));
         
         //audioFormat
         fin.read((char*)&property.audioFormat, sizeof(property.audioFormat));
         if (property.audioFormat != 1)         { Error(23);}
+        fout.write((char*)&property.audioFormat, sizeof(property.audioFormat));
         
         //numChannels
         fin.read((char*)&property.numChannels, sizeof(property.numChannels));
         if (property.numChannels < 1)          { Error(24);}
+        fout.write((char*)&property.numChannels, sizeof(property.numChannels));
         
         //sampleRate
         fin.read((char*)&property.sampleRate, sizeof(property.sampleRate));
         if (property.sampleRate < 20000  ||  property.sampleRate > 20000000) { Error(25);}
+        fout.write((char*)&property.sampleRate, sizeof(property.sampleRate));
         
         //byteRate
         fin.read((char*)&property.byteRate, sizeof(property.byteRate));
+        fout.write((char*)&property.byteRate, sizeof(property.byteRate));
         
         //blockAlign
         fin.read((char*)&property.blockAlign, sizeof(property.blockAlign));
+        fout.write((char*)&property.blockAlign, sizeof(property.blockAlign));
         
         //bitsPerSample
         fin.read((char*)&property.bitsPerSample, sizeof(property.bitsPerSample));
+        fout.write((char*)&property.bitsPerSample, sizeof(property.bitsPerSample));
         
         //Checking_Errors
         if (property.byteRate != property.sampleRate * property.numChannels * (property.bitsPerSample / 8)) { Error(26);}
@@ -78,43 +91,22 @@ void Wav::ReadWav () {
         //subchunk2Id
         fin.read((char*)&data.subchunk2Id, sizeof(data.subchunk2Id));
         if (data.subchunk2Id != 1635017060) { Error(31);}
+        fout.write((char*)&data.subchunk2Id, sizeof(data.subchunk2Id));
         
         //subchunk2Size
         fin.read((char*)&data.subchunk2Size, sizeof(data.subchunk2Size));
+        fout.write((char*)&data.subchunk2Size, sizeof(data.subchunk2Size));
         
         //numSamples
         data.numSamples = data.subchunk2Size / (property.bitsPerSample / 8);
         
         //music
-        data.music = new int16_t [property.bitsPerSample];
-        /*
+        data.music = new int8_t[data.numSamples];
+
         for (int i = 0; i < data.numSamples; i++) {
-            fin.read((char*)&data.music[i], sizeof(property.bitsPerSample));
+            fin.read((char*)&data.music[i], property.bitsPerSample);
+            fout.write((char*)&data.music[i], property.bitsPerSample);
         }
-        
-        cout << property.bitsPerSample << endl;
-        for (int i = 0; i < 5; i++) {
-            cout << data.music[i] << endl;
-        }
-        
-        char **music = new char* [data.numSamples];
-        for (int i = 0; i < data.numSamples; i++) {
-            char *music = new char [property.bitsPerSample];
-        }
-        
-        for (int i = 0; i < data.numSamples; i++) {
-            for (int j = 0; j < property.bitsPerSample; j++) {
-                fin.read(music[i][j], 1);
-            }
-        }
-        
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < property.bitsPerSample; j++) {
-                cout << music[i][j] << "  ";
-            }
-            cout << endl;
-        }
-        */
     }
 }
 
