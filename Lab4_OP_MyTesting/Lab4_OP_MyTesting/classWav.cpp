@@ -98,10 +98,11 @@ void Wav::ReadWav ()
         
         //subchunk2Size
         fin.read((char*)&data.subchunk2Size, sizeof(data.subchunk2Size));
+        data.subchunk2Size *= 2;
         fout.write((char*)&data.subchunk2Size, sizeof(data.subchunk2Size));
         
         //numSamples
-        cout << "read from file = " << data.subchunk2Size << endl;
+        cout << "read from file = " << data.subchunk2Size / 2 << endl;
         data.subchunk2Size = sizeF - 44;
         cout << "sizeF - 44 = " << data.subchunk2Size << endl;
 
@@ -115,10 +116,6 @@ void Wav::ReadWav ()
             fout.write((char*)&data.music[i], property.bitsPerSample / 8);
             fout.write((char*)&data.music[i], property.bitsPerSample / 8);
         }
-
-
-
-
     }
 }
 
