@@ -11,7 +11,7 @@ class Wav {
     string originalF = "";
     string finalF;
     int sizeF;
-    int scale;
+    float scale;
 
     int8_t* music_8;
     int16_t* music_16;
@@ -27,7 +27,7 @@ class Wav {
 public:
     Wav();
     int getSizeF();
-    void setScale(int scale) {this->scale = scale;}
+    void setScale(float scale) {this->scale = scale;}
     
     void ReadWav();
     void InterpolationResize();

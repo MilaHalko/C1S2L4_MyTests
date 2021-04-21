@@ -6,7 +6,7 @@ int main() {
     Wav audio;
     audio.ReadWav();
     
-    int scale;
+    float scale;
     cout << "Scale is "; cin >> scale;
     
     audio.setScale(scale);

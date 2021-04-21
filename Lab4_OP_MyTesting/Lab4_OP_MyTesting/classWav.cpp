@@ -92,13 +92,13 @@ void Wav::ReadWav ()
         {
             music_8 = new int8_t[data.numSamples];
             for (int i = 0; i < data.numSamples; i++)
-                fin.read((char*)&music_8, property.bitsPerSample / 8);
+                fin.read((char*)&music_8[i], property.bitsPerSample / 8);
         }
         else  
         {
             music_16 = new int16_t[data.numSamples];
             for (int i = 0; i < data.numSamples; i++)
-            fin.read((char*)&music_16, property.bitsPerSample / 8);
+            fin.read((char*)&music_16[i], property.bitsPerSample / 8);
 
         }
     }
@@ -106,6 +106,7 @@ void Wav::ReadWav ()
 
 void Wav::WriteWav()
 {
+    data.numSamples *= scale;
     data.subchunk2Size *= scale;
     header.chunkSize = 36 + data.subchunk2Size;
 
@@ -127,12 +128,12 @@ void Wav::WriteWav()
 
 void Wav::InterpolationResize()
 {
-    data.numSamples *= scale;
-    if (property.numChannels == 1 && property.bitsPerSample == 8) newMusic_8 = new int8_t[data.numSamples];
-    else newMusic_16 = new int16_t[data.numSamples];
+    int resultSamples = data.numSamples * scale;
+    if (property.numChannels == 1 && property.bitsPerSample == 8) newMusic_8 = new int8_t[resultSamples];
+    else newMusic_16 = new int16_t[resultSamples];
 
-    float step = float(1) / scale;
-    for (size_t i = 0; i < data.numSamples; i++)
+    float step = 1 / scale;
+    for (long int i = 0; i < resultSamples; i++)
     {
         float index = i * step;
         int prev = index;
