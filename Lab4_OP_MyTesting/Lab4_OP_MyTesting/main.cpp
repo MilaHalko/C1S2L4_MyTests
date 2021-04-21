@@ -8,9 +8,11 @@ int main() {
     
     int scale;
     cout << "Scale is "; cin >> scale;
-    cout << endl;
     
     audio.setScale(scale);
+
+    audio.InterpolationResize();
+    audio.WriteWav();
 
     system("pause");
     return 0;
