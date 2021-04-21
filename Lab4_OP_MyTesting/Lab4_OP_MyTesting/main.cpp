@@ -11,6 +11,10 @@ int main() {
     
     audio.setScale(scale);
 
+    cout << "Want reverse the audio? (y / n)\n";
+    char ch; cin >> ch;
+    if (ch == 'y') audio.reverse = true;
+
     audio.InterpolationResize();
     audio.WriteWav();
 

@@ -118,12 +118,26 @@ void Wav::WriteWav()
     fout.write((char*)&data.subchunk2Id, sizeof(data.subchunk2Id));
     fout.write((char*)&data.subchunk2Size, sizeof(data.subchunk2Size));
     
-    if (property.bitsPerSample == 8)
-        for (int i = 0; i < data.numSamples; i++)
-            fout.write((char*)&newMusic_8[i], sizeof(newMusic_8[i]));
+    if (!reverse)
+    {
+        if (property.bitsPerSample == 8)
+            for (int i = 0; i < data.numSamples; i++)
+                fout.write((char*)&newMusic_8[i], sizeof(newMusic_8[i]));
+        else
+            for (int i = 0; i < data.numSamples; i++)
+                fout.write((char*)&newMusic_16[i], sizeof(newMusic_16[i]));
+    }
     else
-        for (int i = 0; i < data.numSamples; i++)
-            fout.write((char*)&newMusic_16[i], sizeof(newMusic_16[i]));
+    {
+        if (property.bitsPerSample == 8)
+            for (int i = data.numSamples - 1; i >= 0; i--)
+                fout.write((char*)&newMusic_8[i], sizeof(newMusic_8[i]));
+        else
+            for (int i = data.numSamples - 1; i >= 0; i--)
+                fout.write((char*)&newMusic_16[i], sizeof(newMusic_16[i]));
+
+    }
+
 }
 
 void Wav::InterpolationResize()

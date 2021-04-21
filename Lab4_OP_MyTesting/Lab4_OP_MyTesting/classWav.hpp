@@ -12,6 +12,7 @@ class Wav {
     string finalF;
     int sizeF;
     float scale;
+    
 
     int8_t* music_8;
     int16_t* music_16;
@@ -34,5 +35,6 @@ public:
     void WriteWav();
     
     void Error(int);
+    bool reverse = false;
 };
 
